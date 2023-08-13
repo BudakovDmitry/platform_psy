@@ -10,6 +10,9 @@ import { EyeSlashFilledIcon } from "../components/EyeSlashFilledIcon";
 import Link from 'next/link'
 
 import dynamic from 'next/dynamic'
+import axios from 'axios';
+import {Endpoints} from "@/app/helpers/endpoints";
+import {Routes} from "@/app/helpers/routes";
 
 const DynamicInput = dynamic(
     () => import('../components/Input'),
@@ -19,9 +22,19 @@ const DynamicInput = dynamic(
 const Login = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [loginValue, setLoginValue] = useState({
-        name: '',
+        email: '',
         password: '',
     });
+
+    const loginUser = () => {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}${Endpoints.AUTH_LOGIN}/`, loginValue)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -31,14 +44,14 @@ const Login = () => {
                 <Card className='w-1/3 px-6 py-12'>
                     <CardBody>
                         <DynamicInput
-                            label="Ім'я"
+                            label="Пошта"
                             className='mb-5'
                             isClearable
-                            value={loginValue.name}
+                            value={loginValue.email}
                             onChange={(e: any) => setLoginValue(
                                 {
                                     ...loginValue,
-                                    name: e.target.value
+                                    email: e.target.value
                                 }
                             )}
                         />
@@ -67,6 +80,7 @@ const Login = () => {
                             variant="shadow"
                             color="warning"
                             className='mb-10 text-white'
+                            onClick={loginUser}
                         >
                             Увійти
                         </Button>
@@ -75,7 +89,7 @@ const Login = () => {
                             variant="bordered"
                             color="warning"
                             as={Link}
-                            href='/register'
+                            href={Routes.REGISTRATION}
                         >
                             Зареєструватись
                         </Button>

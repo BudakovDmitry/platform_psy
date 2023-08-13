@@ -7,24 +7,38 @@ import { UserIcon } from "../components/UserIcon";
 import { useState } from "react";
 import { EyeFilledIcon } from "../components/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../components/EyeSlashFilledIcon";
-import Link from 'next/link'
+import Link from 'next/link';
+import axios from 'axios';
 
 import dynamic from 'next/dynamic'
+import {Endpoints} from "@/app/helpers/endpoints";
+import {Routes} from "@/app/helpers/routes";
 
 const DynamicInput = dynamic(
     () => import('../components/Input'),
     { ssr: false }
 )
 
-const Register = () => {
+const Registration = () => {
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isVisibleRepeatPassword, setIsVisibleRepeatPassword] = useState(false);
-    const [registerValue, setRegisterValue] = useState({
+    const [registrationValue, setRegistrationValue] = useState({
+        email: '',
         name: '',
-        phone: '',
+        phoneNumber: '',
         password: '',
         repeatPassword: '',
     });
+
+    const registrationUser = () => {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}${Endpoints.AUTH_REGISTRATION}/`, registrationValue)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     const toggleVisibilityPassword = () => setIsVisiblePassword(!isVisiblePassword);
     const toggleVisibilityRepeatPassword = () => setIsVisibleRepeatPassword(!isVisibleRepeatPassword);
@@ -35,13 +49,25 @@ const Register = () => {
                 <Card className='w-1/3 px-6 py-12'>
                     <CardBody>
                         <DynamicInput
+                            label="Пошта"
+                            className='mb-5'
+                            isClearable
+                            value={registrationValue.email}
+                            onChange={(e: any) => setRegistrationValue(
+                                {
+                                    ...registrationValue,
+                                    email: e.target.value
+                                }
+                            )}
+                        />
+                        <DynamicInput
                             label="Ім'я"
                             className='mb-5'
                             isClearable
-                            value={registerValue.name}
-                            onChange={(e: any) => setRegisterValue(
+                            value={registrationValue.name}
+                            onChange={(e: any) => setRegistrationValue(
                                 {
-                                    ...registerValue,
+                                    ...registrationValue,
                                     name: e.target.value
                                 }
                             )}
@@ -50,21 +76,21 @@ const Register = () => {
                             label="Телефон"
                             className='mb-5'
                             isClearable
-                            value={registerValue.phone}
-                            onChange={(e: any) => setRegisterValue(
+                            value={registrationValue.phoneNumber}
+                            onChange={(e: any) => setRegistrationValue(
                                 {
-                                    ...registerValue,
-                                    phone: e.target.value
+                                    ...registrationValue,
+                                    phoneNumber: e.target.value
                                 }
                             )}
                         />
                         <DynamicInput
                             label="Пароль"
                             className='mb-5'
-                            value={registerValue.password}
-                            onChange={(e: any) => setRegisterValue(
+                            value={registrationValue.password}
+                            onChange={(e: any) => setRegistrationValue(
                                 {
-                                    ...registerValue,
+                                    ...registrationValue,
                                     password: e.target.value
                                 }
                             )}
@@ -82,10 +108,10 @@ const Register = () => {
                         <DynamicInput
                             label="Повторіть пароль"
                             className='mb-10'
-                            value={registerValue.repeatPassword}
-                            onChange={(e: any) => setRegisterValue(
+                            value={registrationValue.repeatPassword}
+                            onChange={(e: any) => setRegistrationValue(
                                 {
-                                    ...registerValue,
+                                    ...registrationValue,
                                     repeatPassword: e.target.value
                                 }
                             )}
@@ -104,6 +130,7 @@ const Register = () => {
                             variant="shadow"
                             color="warning"
                             className='mb-10 text-white'
+                            onClick={registrationUser}
                         >
                             Зареєструватись
                         </Button>
@@ -112,7 +139,7 @@ const Register = () => {
                             variant="bordered"
                             color="warning"
                             as={Link}
-                            href='/login'
+                            href={Routes.LOGIN}
                         >
                             Вхід
                         </Button>
@@ -123,4 +150,4 @@ const Register = () => {
     );
 }
 
-export default Register;
+export default Registration;

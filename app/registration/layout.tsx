@@ -1,7 +1,7 @@
 import { Providers } from "./providers";
 import { ReactNode } from 'react';
 
-const RegisterLayout = ({children}: { children: ReactNode }) => {
+const RegistrationLayout = ({children}: { children: ReactNode }) => {
     return (
         <>
             <Providers>
@@ -11,4 +11,4 @@ const RegisterLayout = ({children}: { children: ReactNode }) => {
     )
 }
 
-export default RegisterLayout;
+export default RegistrationLayout;
