@@ -15,7 +15,7 @@ import {Endpoints} from "@/app/helpers/endpoints";
 import {Routes} from "@/app/helpers/routes";
 
 const DynamicInput = dynamic(
-    () => import('../components/Input'),
+    () => import('../components/Forms/Input'),
     { ssr: false }
 )
 
