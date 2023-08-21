@@ -3,8 +3,8 @@ import axios from 'axios';
 export const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const $api = axios.create({
-    withCredentials: true,
-    baseURL: API_URL
+    baseURL: API_URL,
+    withCredentials: false,
 })
 
 $api.interceptors.request.use((config) => {

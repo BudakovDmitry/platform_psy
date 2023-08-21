@@ -1,9 +1,12 @@
 export type UserType = {
+    _id: string
     email: string
     password: string
     isAcivated: boolean
     phoneNumber: string
-    id: string
+    activationLink: string
+    name: string
+    roles: string[]
 }
 
 export type AuthResponse = {

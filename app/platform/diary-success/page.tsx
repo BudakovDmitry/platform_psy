@@ -9,6 +9,12 @@ import dynamic from "next/dynamic";
 import {EyeFilledIcon} from "@nextui-org/shared-icons";
 import {EyeSlashFilledIcon} from "@/app/components/EyeSlashFilledIcon";
 import Entry from "@/app/components/Entry/Entry";
+import {useDispatch, useSelector} from 'react-redux';
+import { AnyAction, Dispatch } from 'redux';
+import {UsersStateType} from "@/app/redux/types/types";
+import { fetchUsers } from '@/app/redux/slices/users/usersSlice';
+
+
 
 const DynamicInput = dynamic(
     () => import('@/app/components/Forms/Input'),
@@ -68,6 +74,9 @@ const DiarySuccess = () => {
         title: '',
         description: '',
     });
+    const dispatch = useDispatch<Dispatch<AnyAction>>();
+    const users = useSelector((state: UsersStateType) => state.users)
+    console.log('users', users)
 
     const sendDiaryEntry = () => {
         console.log('diaryEntryValue', diaryEntryValue)
@@ -85,10 +94,16 @@ const DiarySuccess = () => {
         setIsShowForm(value => !value)
     }
 
+    const getUsers = (): void => {
+        // @ts-ignore
+        dispatch(fetchUsers());
+    };
+
     return (
         <div className='relative w-full'>
             <Image className='absolute opacity-10 inset-0 z-0' fill src={bgImage} alt='background' />
             <div className='px-10 py-6 min-h-screen z-1 relative'>
+                <Button onClick={getUsers}>Get Users</Button>
                 <Card
                     isBlurred
                     className='border-none my-10'
