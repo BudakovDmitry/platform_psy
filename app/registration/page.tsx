@@ -2,16 +2,16 @@
 
 import { Card, CardBody } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { EyeFilledIcon } from "../components/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../components/EyeSlashFilledIcon";
 import Link from 'next/link';
-
 import dynamic from 'next/dynamic'
 import {Endpoints} from "@/app/helpers/endpoints";
 import {Routes} from "@/app/helpers/routes";
 import $api from "@/app/http/axios";
 import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
 
 const DynamicInput = dynamic(
     () => import('../components/Forms/Input'),
@@ -30,17 +30,18 @@ const Registration = () => {
     });
 
     const registrationUser = () => {
-        toast.promise(
-            $api.post(Endpoints.AUTH_REGISTRATION, registrationValue)
-                .then(function (response) {
-                    console.log(response);
-                }),
-            {
-                pending: 'Реєстрація...',
-                success: 'Реєстрація успішна, підтвердіть реєстрацію на пошті',
-                error: 'Сталася помилка, спробуйте ще раз.'
-            }
-        )
+        $api.post(Endpoints.AUTH_REGISTRATION, registrationValue)
+            .then((response) => {
+                console.log(response);
+                if(response.status === 200) {
+                    toast.success('Реєстрація успішна, підтвердіть реєстрацію по посиланню з пошти', {
+                        onClose: () => redirect(Routes.LOGIN)
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     const toggleVisibilityPassword = () => setIsVisiblePassword(!isVisiblePassword);

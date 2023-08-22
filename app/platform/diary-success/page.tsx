@@ -74,9 +74,6 @@ const DiarySuccess = () => {
         title: '',
         description: '',
     });
-    const dispatch = useDispatch<Dispatch<AnyAction>>();
-    const users = useSelector((state: UsersStateType) => state.users)
-    console.log('users', users)
 
     const sendDiaryEntry = () => {
         console.log('diaryEntryValue', diaryEntryValue)
@@ -94,16 +91,10 @@ const DiarySuccess = () => {
         setIsShowForm(value => !value)
     }
 
-    const getUsers = (): void => {
-        // @ts-ignore
-        dispatch(fetchUsers());
-    };
-
     return (
         <div className='relative w-full'>
             <Image className='absolute opacity-10 inset-0 z-0' fill src={bgImage} alt='background' />
             <div className='px-10 py-6 min-h-screen z-1 relative'>
-                <Button onClick={getUsers}>Get Users</Button>
                 <Card
                     isBlurred
                     className='border-none my-10'
