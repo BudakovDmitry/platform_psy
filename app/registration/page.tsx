@@ -1,18 +1,17 @@
 'use client'
 
-import { Input } from "@nextui-org/react";
 import { Card, CardBody } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
-import { UserIcon } from "../components/UserIcon";
 import { useState } from "react";
 import { EyeFilledIcon } from "../components/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../components/EyeSlashFilledIcon";
 import Link from 'next/link';
-import axios from 'axios';
 
 import dynamic from 'next/dynamic'
 import {Endpoints} from "@/app/helpers/endpoints";
 import {Routes} from "@/app/helpers/routes";
+import $api from "@/app/http/axios";
+import { toast } from "react-toastify";
 
 const DynamicInput = dynamic(
     () => import('../components/Forms/Input'),
@@ -31,13 +30,17 @@ const Registration = () => {
     });
 
     const registrationUser = () => {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URL}${Endpoints.AUTH_REGISTRATION}/`, registrationValue)
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        toast.promise(
+            $api.post(Endpoints.AUTH_REGISTRATION, registrationValue)
+                .then(function (response) {
+                    console.log(response);
+                }),
+            {
+                pending: 'Реєстрація...',
+                success: 'Реєстрація успішна, підтвердіть реєстрацію на пошті',
+                error: 'Сталася помилка, спробуйте ще раз.'
+            }
+        )
     }
 
     const toggleVisibilityPassword = () => setIsVisiblePassword(!isVisiblePassword);

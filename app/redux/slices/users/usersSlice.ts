@@ -25,23 +25,23 @@ export const usersSlice = createSlice({
     reducers: {
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(fetchUsers.pending, (state) => {
-                state.pending = true;
-                state.errors = null;
-                state.succeeded = false;
-            })
-            .addCase(fetchUsers.fulfilled, (state, action) => {
-                state.pending = false;
-                state.users = action.payload;
-                state.succeeded = true;
-                state.errors = null;
-            })
-            .addCase(fetchUsers.rejected, (state, action) => {
-                state.pending = false;
-                state.succeeded = false;
-                state.errors = null;
-            });
+        builder.addCase(fetchUsers.pending, (state: any) => {
+            state.pending = true;
+            state.errors = null;
+            state.succeeded = false;
+        });
+        builder.addCase(fetchUsers.fulfilled, (state: any, action: any) => {
+            state.pending = false;
+            state.users = action.payload;
+            state.succeeded = true;
+            state.errors = null;
+        });
+        builder.addCase(fetchUsers.rejected, (state: any) => {
+            state.pending = false;
+            state.succeeded = false;
+            state.errors = null;
+        });
+
     },
 })
 
