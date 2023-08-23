@@ -6,7 +6,15 @@ export type UserType = {
     phoneNumber: string
     activationLink: string
     name: string
+    diarySuccess: DiarySuccessType[]
     roles: string[]
+}
+
+export type DiarySuccessType = {
+    _id: string
+    title: string
+    description: string
+    date: string
 }
 
 export type AuthResponse = {

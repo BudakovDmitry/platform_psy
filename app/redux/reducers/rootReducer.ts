@@ -1,15 +1,15 @@
 import authSlice from "@/app/redux/slices/auth/authSlice";
-import {AuthStateType, UsersStateType} from "@/app/redux/types/types";
-import usersSlice from "@/app/redux/slices/users/usersSlice";
+import {AuthStateType, UserStateType} from "@/app/redux/types/types";
+import userSlice from "@/app/redux/slices/user/userSlice";
 
 export type StateType = {
     auth: AuthStateType,
-    users: UsersStateType
+    user: UserStateType
 };
 
 const rootReducer = {
     auth: authSlice,
-    users: usersSlice
+    user: userSlice
 };
 
 export default rootReducer;

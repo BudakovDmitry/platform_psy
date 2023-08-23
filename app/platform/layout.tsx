@@ -1,24 +1,31 @@
 'use client'
 
 import { Providers } from "./providers";
-import {ReactNode, useEffect} from 'react';
+import {ReactNode, useEffect, useState} from 'react';
 import Sidebar from "@/app/components/Sidebar/Sidebar";
 import {useDispatch, useSelector} from "react-redux";
 import {redirect} from "next/navigation";
 import {checkAuth} from "@/app/redux/slices/auth/authSlice";
+import {fetchUserById} from "@/app/redux/slices/user/userSlice";
+import Loader from "@/app/components/Loader/Loader";
 
 const PlatformLayout = ({children}: { children: ReactNode }) => {
     const store = useSelector((state: any) => state.auth)
     const dispatch = useDispatch();
-    console.log('store', store)
 
     useEffect(() => {
         // @ts-ignore
         localStorage.getItem('token') ? dispatch(checkAuth()) : redirect('/login')
+        // @ts-ignore
+        localStorage.getItem('userId') && dispatch(fetchUserById(localStorage.getItem('userId')))
     }, [])
 
     if(store.isChecking) {
-        return <p>Loading...</p>
+        return (
+            <div className='w-full h-screen flex items-center justify-center'>
+                <Loader />
+            </div>
+        )
     }
 
     if(!store.isChecking && !store.isAuth) {

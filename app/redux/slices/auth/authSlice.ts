@@ -1,13 +1,12 @@
 'use client'
 
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { UserType } from "@/app/types/types";
 import $api, {API_URL} from "@/app/http/axios";
 import {Endpoints} from "@/app/helpers/endpoints";
-import {fetchUsers} from "@/app/redux/slices/users/usersSlice";
-import {redirect} from "next/navigation";
-import {Routes} from "@/app/helpers/routes";
 import axios from "axios";
+import {fetchUserById} from "@/app/redux/slices/user/userSlice";
+import {useDispatch} from "react-redux";
 
 
 type UserLoginInfo = {
@@ -21,6 +20,7 @@ export const login = createAsyncThunk(
         const response = await $api.post(Endpoints.AUTH_LOGIN, {email: user.email, password: user.password});
         if(response.status === 200) {
             localStorage.setItem('token', response.data.accessToken);
+            localStorage.setItem('userId', response.data.user.id);
         }
         return response.data;
     }
@@ -43,9 +43,9 @@ export const checkAuth = createAsyncThunk(
     async () => {
 
         const response = await axios.get(`${API_URL}${Endpoints.AUTH_REFRESH}`, { withCredentials: true });
-        console.log('response check auth', response)
         if(response.status === 200) {
             localStorage.setItem('token', response.data.accessToken);
+            localStorage.setItem('userId', response.data.user.id);
         }
         return response.data;
     }

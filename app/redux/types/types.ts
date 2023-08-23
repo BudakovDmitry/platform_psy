@@ -9,8 +9,8 @@ export type AuthStateType = {
     isChecking: boolean
 }
 
-export type UsersStateType = {
-    users: UserType[]
+export type UserStateType = {
+    user: UserType
     pending: boolean
     errors: string | null
     succeeded: boolean
