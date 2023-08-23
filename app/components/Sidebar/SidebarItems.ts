@@ -52,7 +52,7 @@ export const SidebarItems = [
     {
         id: 8,
         name: 'Вийти з аккаунту',
-        link: '',
+        link: 'logout',
         icon: LogoutIcon
     },
 ]

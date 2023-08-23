@@ -5,9 +5,17 @@ import Image from 'next/image';
 import { usePathname } from "next/navigation";
 import {SidebarItems} from "@/app/components/Sidebar/SidebarItems";
 import Logo from "@/app/components/Logo/Logo";
+import {useDispatch} from "react-redux";
+import {logout} from "@/app/redux/slices/auth/authSlice";
 
 const Sidebar = () => {
-    const pathname = usePathname()
+    const pathname = usePathname();
+    const dispatch = useDispatch();
+
+    const logoutUser = () => {
+        // @ts-ignore
+        dispatch(logout())
+    }
 
     return (
             <div className="fixed flex flex-col top-0 left-0 w-72 bg-white h-full shadow-xl">
@@ -25,7 +33,13 @@ const Sidebar = () => {
                                 </li>
                             ) : (
                                 <li key={item.id}>
-                                    <Link href={item.link} className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-100 text-gray-600 hover:text-gray-800 border-l-4 hover:border-teal-800 pr-6 ${item.link === pathname ? 'bg-gray-100 text-gray-800 border-l-4 border-teal-800' : 'border-transparent'}`}>
+                                    <Link
+                                        href={item.link}
+                                        onClick={item.link === 'logout' ? (e) => {
+                                            e.preventDefault();
+                                            logoutUser();
+                                        } : undefined}
+                                        className={`relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-100 text-gray-600 hover:text-gray-800 border-l-4 hover:border-teal-800 pr-6 ${item.link === pathname ? 'bg-gray-100 text-gray-800 border-l-4 border-teal-800' : 'border-transparent'}`}>
                                         <span className="inline-flex justify-center items-center ml-4">
                                             <Image className='w-5 h-5' src={item.icon} alt='test' />
                                           </span>

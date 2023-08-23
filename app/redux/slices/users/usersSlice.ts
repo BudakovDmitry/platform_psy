@@ -41,7 +41,6 @@ export const usersSlice = createSlice({
             state.succeeded = false;
             state.errors = null;
         });
-
     },
 })
 

@@ -13,6 +13,10 @@ import dynamic from 'next/dynamic'
 import axios from 'axios';
 import {Endpoints} from "@/app/helpers/endpoints";
 import {Routes} from "@/app/helpers/routes";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "@/app/redux/slices/auth/authSlice";
+import {AuthStateType} from "@/app/redux/types/types";
+import {redirect} from "next/navigation";
 
 const DynamicInput = dynamic(
     () => import('../components/Forms/Input'),
@@ -25,15 +29,16 @@ const Login = () => {
         email: '',
         password: '',
     });
+    const dispatch = useDispatch();
+    const isAuth = useSelector((state: any) => state.auth.isAuth)
+
+    if(isAuth) {
+        redirect(Routes.PLATFORM);
+    }
 
     const loginUser = () => {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URL}${Endpoints.AUTH_LOGIN}/`, loginValue)
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        // @ts-ignore
+        dispatch(login(loginValue))
     }
 
     const toggleVisibility = () => setIsVisible(!isVisible);
