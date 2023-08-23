@@ -6,5 +6,6 @@ export enum Routes {
     DIARY_SUCCESS = `${Routes.PLATFORM}/diary-success`,
     DIARY_OF_GOODNESS = `${Routes.PLATFORM}/diary-of-goodness`,
     PROFILE = `${Routes.PLATFORM}/profile`,
-    SETTINGS = `${Routes.PLATFORM}/settings`
+    SETTINGS = `${Routes.PLATFORM}/settings`,
+    CALENDAR = `${Routes.PLATFORM}/calendar`
 }
