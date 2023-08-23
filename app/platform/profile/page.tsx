@@ -1,6 +1,12 @@
+import ProfileCard from "@/app/components/ProfileCard/ProfileCard";
+
 const Profile = () => {
     return (
-        <h1>Profile</h1>
+        <>
+            <div className="h-screen overflow-hidden flex items-center justify-center">
+                <ProfileCard />
+            </div>
+        </>
     )
 }
 

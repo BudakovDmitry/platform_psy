@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import {Card, CardBody} from "@nextui-org/react";
+import {Card, CardBody, ScrollShadow} from "@nextui-org/react";
 import bgImage from '@/public/diary_bg_3.jpg'
 import {Button} from "@nextui-org/button";
 import {useState} from "react";
@@ -224,18 +224,20 @@ const DiarySuccess = () => {
                 >
                     {isShowForm ? <EyeFilledIcon /> : <EyeSlashFilledIcon />}
                 </Button>
-                <Card
-                    isBlurred
-                    className='border-none my-6'
-                    shadow='sm'
-                >
-                    <CardBody className='p-10'>
-                        <h2 className='text-center font-bold mb-14 text-xl'>Name, це твій щоденник успіху</h2>
-                        {user.diarySuccess.length ? [...user.diarySuccess].reverse().map((item: DiarySuccessType)  => {
-                            return (<Entry key={item._id} title={item.title} date={item.date} description={item.description} />)
-                        }) : <p className='text-center'>Поки тут немає жодногу запису, але ти можеш прямо зараз додати</p>}
-                    </CardBody>
-                </Card>
+                <ScrollShadow hideScrollBar className='h-[800px]'>
+                    <Card
+                        isBlurred
+                        className='border-none my-6'
+                        shadow='sm'
+                    >
+                        <CardBody className='p-10'>
+                            <h2 className='text-center font-bold mb-14 text-xl'>{user.name}, це твій щоденник успіху</h2>
+                            {user.diarySuccess.length ? [...user.diarySuccess].reverse().map((item: DiarySuccessType)  => {
+                                return (<Entry key={item._id} title={item.title} date={item.date} description={item.description} />)
+                            }) : <p className='text-center'>Поки тут немає жодногу запису, але ти можеш прямо зараз додати</p>}
+                        </CardBody>
+                    </Card>
+                </ScrollShadow>
             </div>
         </div>
     )

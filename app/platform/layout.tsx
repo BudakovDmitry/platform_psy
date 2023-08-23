@@ -35,7 +35,7 @@ const PlatformLayout = ({children}: { children: ReactNode }) => {
     return (
         <>
             <Providers>
-                <div className='min-h-screen flex flex-auto bg-gray-50 text-gray-800'>
+                <div className='min-h-screen flex flex-auto bg-stone-100 text-gray-800'>
                     <Sidebar />
                     <div className='ml-72 w-full'>
                         {children}
