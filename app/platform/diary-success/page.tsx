@@ -10,7 +10,7 @@ import {EyeFilledIcon} from "@nextui-org/shared-icons";
 import {EyeSlashFilledIcon} from "@/app/components/EyeSlashFilledIcon";
 import Entry from "@/app/components/Entry/Entry";
 import {useDispatch, useSelector} from 'react-redux';
-import {updateUser} from '@/app/redux/slices/user/userSlice';
+import {addDiarySuccess} from '@/app/redux/slices/user/userSlice';
 import {DiarySuccessType} from "@/app/types/types";
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
@@ -39,7 +39,7 @@ const DiarySuccess = () => {
 
     const sendDiaryEntry = () => {
         // @ts-ignore
-        dispatch(updateUser({
+        dispatch(addDiarySuccess({
             ...user,
             diarySuccess: [...user.diarySuccess, {
                 ...diaryEntryValue,
