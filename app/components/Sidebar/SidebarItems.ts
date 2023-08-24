@@ -6,6 +6,7 @@ import ProfileIcon from '@/public/icons/icon_profile.svg';
 import SettingsIcon from '@/public/icons/icon_settings.svg';
 import LogoutIcon from '@/public/icons/icon_logout.svg';
 import CalendarIcon from '@/public/icons/icon_calendar.svg';
+import CustomersIcon from '@/public/icons/icon_customers.svg';
 
 export const SidebarItems = [
     {
@@ -60,13 +61,20 @@ export const SidebarItems = [
     },
     {
         id: 8,
+        name: 'Клієнти',
+        link: `${Routes.CUSTOMERS}`,
+        icon: CustomersIcon,
+        roles: ['ADMIN']
+    },
+    {
+        id: 9,
         name: 'Налаштування',
         link: `${Routes.SETTINGS}`,
         icon: SettingsIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 9,
+        id: 10,
         name: 'Вийти з аккаунту',
         link: 'logout',
         icon: LogoutIcon,

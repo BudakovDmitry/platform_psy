@@ -15,3 +15,10 @@ export type UserStateType = {
     errors: string | null
     succeeded: boolean
 }
+
+export type CustomersStateType = {
+    customers: UserType[]
+    pending: boolean
+    errors: string | null
+    succeeded: boolean
+}

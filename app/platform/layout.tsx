@@ -30,7 +30,7 @@ const PlatformLayout = ({children}: { children: ReactNode }) => {
 
     if(store.isChecking) {
         return (
-            <div className='w-full h-screen flex items-center justify-center'>
+            <div className='w-full h-screen flex items-center justify-center bg-stone-100'>
                 <Loader />
             </div>
         )
