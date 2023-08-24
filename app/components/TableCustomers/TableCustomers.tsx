@@ -81,7 +81,6 @@ const TableCustomers = ({ customers, sendUpdateCustomer, openCustomer }: TableCu
                                  href="#"
                                  onClick={(e) => {
                                   e.preventDefault();
-                                  console.log('click')
                                   openCustomer(customer._id)
                               }}>
                                   <svg

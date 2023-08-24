@@ -46,7 +46,7 @@ const PlatformLayout = ({children}: { children: ReactNode }) => {
             <Providers>
                 <div className='min-h-screen flex flex-auto bg-stone-100 text-gray-800'>
                     <Sidebar user={user} pathname={pathname} logoutUser={logoutUser} />
-                    <div className='ml-72 w-full'>
+                    <div className='ml-72 w-full relative'>
                         {children}
                     </div>
                 </div>

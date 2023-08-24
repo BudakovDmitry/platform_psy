@@ -22,3 +22,10 @@ export type CustomersStateType = {
     errors: string | null
     succeeded: boolean
 }
+
+export type CustomerStateType = {
+    customer: UserType
+    pending: boolean
+    errors: string | null
+    succeeded: boolean
+}

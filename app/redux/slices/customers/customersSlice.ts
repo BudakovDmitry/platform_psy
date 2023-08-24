@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserType } from "@/app/types/types";
 import $api from "@/app/http/axios";
 import {Endpoints} from "@/app/helpers/endpoints";
+import {Roles} from "@/app/helpers/roles";
 
 export const fetchAllCustomers = createAsyncThunk(
     'customers/fetchAllCustomers',
@@ -15,7 +16,6 @@ export const updateCustomer = createAsyncThunk(
     'customers/updateCustomer',
     async (user: UserType) => {
         const response = await $api.put(Endpoints.USERS, user);
-        console.log('response data customer', response.data)
         return response.data;
     }
 );
@@ -39,8 +39,10 @@ export const customersSlice = createSlice({
             state.succeeded = false;
         });
         builder.addCase(fetchAllCustomers.fulfilled, (state: any, action: any) => {
+            const customersWithoutAdmins = action.payload.filter((customer: UserType) => !customer.roles.includes(Roles.ADMIN))
+
             state.pending = false;
-            state.customers = action.payload;
+            state.customers = customersWithoutAdmins;
             state.succeeded = true;
             state.errors = null;
         });

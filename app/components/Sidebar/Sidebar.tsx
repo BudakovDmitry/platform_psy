@@ -5,6 +5,7 @@ import Image from 'next/image';
 import {SidebarItems} from "@/app/components/Sidebar/SidebarItems";
 import Logo from "@/app/components/Logo/Logo";
 import {UserType} from "@/app/types/types";
+import Loader from "@/app/components/Loader/Loader";
 
 type SidebarProps = {
     user: UserType
@@ -13,6 +14,10 @@ type SidebarProps = {
 }
 
 const Sidebar = ({ user, pathname, logoutUser }: SidebarProps) => {
+    if(!user.roles.length) {
+        return <Loader/>
+    }
+
     return (
             <div className="fixed flex flex-col top-0 left-0 w-72 bg-white h-full shadow-xl">
                 <div className="flex items-center justify-center h-24">

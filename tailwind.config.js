@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        '150-px': '150px',
+      },
       boxShadow: {
         '3xl': '0px 0px 10px 1px rgba(0,0,0,0.1);',
       },

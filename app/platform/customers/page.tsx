@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Roles} from "@/app/helpers/roles";
 import {redirect} from "next/navigation";
 import {Routes} from "@/app/helpers/routes";
-import {fetchAllCustomers, updateCustomer} from "@/app/redux/slices/customersSlice/customersSlice";
-import {useEffect} from "react";
+import {fetchAllCustomers, updateCustomer} from "@/app/redux/slices/customers/customersSlice";
+import {useEffect, useState} from "react";
 import Loader from "@/app/components/Loader/Loader";
 import {UserType} from "@/app/types/types";
 import { useRouter } from 'next/navigation'
