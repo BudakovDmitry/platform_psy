@@ -5,9 +5,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {Roles} from "@/app/helpers/roles";
 import {redirect} from "next/navigation";
 import {Routes} from "@/app/helpers/routes";
-import {fetchAllCustomers} from "@/app/redux/slices/customersSlice/customersSlice";
+import {fetchAllCustomers, updateCustomer} from "@/app/redux/slices/customersSlice/customersSlice";
 import {useEffect} from "react";
 import Loader from "@/app/components/Loader/Loader";
+import {UserType} from "@/app/types/types";
 
 const Customers = () => {
 
@@ -20,23 +21,21 @@ const Customers = () => {
         dispatch(fetchAllCustomers())
     }, []);
 
-
-    console.log('customers', customers)
     if (!user.roles.includes(Roles.ADMIN)) {
         redirect(Routes.DASHBOARD)
     }
 
-    if(customers.pending) {
-        return (
-            <div className='w-full h-screen flex items-center justify-center bg-stone-100'>
-                <Loader />
-            </div>
-        )
+    const sendUpdateCustomer = (user: UserType) => {
+        // @ts-ignore
+        dispatch(updateCustomer({
+            ...user,
+            isActive: !user.isActive,
+        }))
     }
 
     return(
         <div className='overflow-hidden flex justify-center'>
-            <TableCustomers customers={customers.customers} />
+            <TableCustomers customers={customers.customers} sendUpdateCustomer={sendUpdateCustomer} />
         </div>
     )
 }

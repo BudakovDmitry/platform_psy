@@ -6,9 +6,7 @@ import {Endpoints} from "@/app/helpers/endpoints";
 export const fetchUserById = createAsyncThunk(
     'users/fetchUserById',
     async (id: string) => {
-        console.log('id', id)
         const response = await $api.get(`${Endpoints.USERS}/${id}`);
-        console.log('response user', response)
         return response.data;
     }
 );
@@ -16,9 +14,7 @@ export const fetchUserById = createAsyncThunk(
 export const addDiarySuccess = createAsyncThunk(
     'users/addDiarySuccess',
     async (user: UserType) => {
-        console.log('user thunk', user)
         const response = await $api.put(Endpoints.USERS, user);
-        console.log('response update user', response)
         return response.data;
     }
 );

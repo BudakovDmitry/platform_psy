@@ -42,15 +42,15 @@ export const SidebarItems = [
     },
     {
         id: 5,
-        name: 'Персональні налаштування',
-        roles: ['ADMIN', 'USER']
+        name: 'Адміністрування',
+        roles: ['ADMIN']
     },
     {
         id: 6,
-        name: 'Профіль',
-        link: `${Routes.PROFILE}`,
-        icon: ProfileIcon,
-        roles: ['ADMIN', 'USER']
+        name: 'Клієнти',
+        link: `${Routes.CUSTOMERS}`,
+        icon: CustomersIcon,
+        roles: ['ADMIN']
     },
     {
         id: 7,
@@ -61,20 +61,25 @@ export const SidebarItems = [
     },
     {
         id: 8,
-        name: 'Клієнти',
-        link: `${Routes.CUSTOMERS}`,
-        icon: CustomersIcon,
-        roles: ['ADMIN']
+        name: 'Персональні налаштування',
+        roles: ['ADMIN', 'USER']
     },
     {
         id: 9,
+        name: 'Профіль',
+        link: `${Routes.PROFILE}`,
+        icon: ProfileIcon,
+        roles: ['ADMIN', 'USER']
+    },
+    {
+        id: 10,
         name: 'Налаштування',
         link: `${Routes.SETTINGS}`,
         icon: SettingsIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 10,
+        id: 11,
         name: 'Вийти з аккаунту',
         link: 'logout',
         icon: LogoutIcon,

@@ -2,7 +2,8 @@ export type UserType = {
     _id: string
     email: string
     password: string
-    isAcivated: boolean
+    isActivated: boolean
+    isActive: boolean
     phoneNumber: string
     activationLink: string
     name: string
