@@ -4,9 +4,10 @@ import {Card, CardBody} from "@nextui-org/react";
 type TableCustomersProps = {
     customers: UserType[]
     sendUpdateCustomer: (user: UserType) => void
+    openCustomer: (id: string) => void
 }
 
-const TableCustomers = ({ customers, sendUpdateCustomer }: TableCustomersProps) => {
+const TableCustomers = ({ customers, sendUpdateCustomer, openCustomer }: TableCustomersProps) => {
 
   if(!customers.length) {
     return (
@@ -76,7 +77,13 @@ const TableCustomers = ({ customers, sendUpdateCustomer }: TableCustomersProps) 
                       </td>
                       <td className="px-6 py-4">
                           <div className="flex justify-end gap-4">
-                              <a x-data="{ tooltip: 'Edite' }" href="#">
+                              <a x-data="{ tooltip: 'Edite' }"
+                                 href="#"
+                                 onClick={(e) => {
+                                  e.preventDefault();
+                                  console.log('click')
+                                  openCustomer(customer._id)
+                              }}>
                                   <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"

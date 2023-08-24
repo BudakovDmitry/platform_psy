@@ -9,12 +9,14 @@ import {fetchAllCustomers, updateCustomer} from "@/app/redux/slices/customersSli
 import {useEffect} from "react";
 import Loader from "@/app/components/Loader/Loader";
 import {UserType} from "@/app/types/types";
+import { useRouter } from 'next/navigation'
 
 const Customers = () => {
 
     const user = useSelector((state: any) => state.user.user)
     const customers = useSelector((state: any) => state.customers)
     const dispatch = useDispatch()
+    const router = useRouter()
 
     useEffect(() => {
         // @ts-ignore
@@ -33,9 +35,13 @@ const Customers = () => {
         }))
     }
 
+    const openCustomer = (id: string) => {
+        router.push(`${Routes.CUSTOMER}/${id}`)
+    }
+
     return(
         <div className='overflow-hidden flex justify-center'>
-            <TableCustomers customers={customers.customers} sendUpdateCustomer={sendUpdateCustomer} />
+            <TableCustomers customers={customers.customers} sendUpdateCustomer={sendUpdateCustomer} openCustomer={openCustomer} />
         </div>
     )
 }
