@@ -7,6 +7,7 @@ import SettingsIcon from '@/public/icons/icon_settings.svg';
 import LogoutIcon from '@/public/icons/icon_logout.svg';
 import CalendarIcon from '@/public/icons/icon_calendar.svg';
 import CustomersIcon from '@/public/icons/icon_customers.svg';
+import MessengerIcon from '@/public/icons/icon_messenger_2.svg';
 
 export const SidebarItems = [
     {
@@ -23,63 +24,70 @@ export const SidebarItems = [
     },
     {
         id: 2,
-        name: 'Щоденники',
+        name: 'Чат',
+        link: `${Routes.MESSENGER}`,
+        icon: MessengerIcon,
         roles: ['ADMIN', 'USER']
     },
     {
         id: 3,
+        name: 'Щоденники',
+        roles: ['ADMIN', 'USER']
+    },
+    {
+        id: 4,
         name: 'Успіху',
         link: `${Routes.DIARY_SUCCESS}`,
         icon: DiarySuccessIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 4,
+        id: 5,
         name: 'Блага',
         link: `${Routes.DIARY_OF_GOODNESS}`,
         icon: DiaryOfGoodnessIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 5,
+        id: 6,
         name: 'Адміністрування',
         roles: ['ADMIN']
     },
     {
-        id: 6,
+        id: 7,
         name: 'Клієнти',
         link: `${Routes.CUSTOMERS}`,
         icon: CustomersIcon,
         roles: ['ADMIN']
     },
     {
-        id: 7,
+        id: 8,
         name: 'Календар',
         link: `${Routes.CALENDAR}`,
         icon: CalendarIcon,
         roles: ['ADMIN']
     },
     {
-        id: 8,
+        id: 9,
         name: 'Персональні налаштування',
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 9,
+        id: 10,
         name: 'Профіль',
         link: `${Routes.PROFILE}`,
         icon: ProfileIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 10,
+        id: 11,
         name: 'Налаштування',
         link: `${Routes.SETTINGS}`,
         icon: SettingsIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 11,
+        id: 12,
         name: 'Вийти з аккаунту',
         link: 'logout',
         icon: LogoutIcon,

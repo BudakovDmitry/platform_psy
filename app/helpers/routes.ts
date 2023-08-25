@@ -9,5 +9,6 @@ export enum Routes {
     SETTINGS = `${Routes.PLATFORM}/settings`,
     CALENDAR = `${Routes.PLATFORM}/calendar`,
     CUSTOMERS = `${Routes.PLATFORM}/customers`,
-    CUSTOMER = `${Routes.PLATFORM}/customer`
+    CUSTOMER = `${Routes.PLATFORM}/customer`,
+    MESSENGER = `${Routes.PLATFORM}/messenger`,
 }
