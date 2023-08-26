@@ -8,12 +8,20 @@ import SendIcon from '@/public/send.png'
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Popover, PopoverTrigger, PopoverContent, Button} from "@nextui-org/react";
 import {API_URL} from "@/app/http/axios";
 import Image from "next/image";
+import {fetchAdmin} from "@/app/redux/slices/admin/adminSlice";
+import {useDispatch} from "react-redux";
+import {ChatType} from "@/app/types/types";
 
 const socket = io('http://localhost:5000', {
     transports: ['websocket'],
 });
 
-const Chat = () => {
+type ChatProps = {
+    chats: ChatType[]
+    onCreateChat: () => void
+}
+
+const Chat = ({onCreateChat, chats}: ChatProps) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
 
@@ -34,130 +42,138 @@ const Chat = () => {
     {/*    <div key={index}>{msg}</div>*/}
     {/*))}*/}
 
+    const addEmojiToMessage = (emoji: { native: string; }) => {
+        setMessage(previosMessage => previosMessage + emoji.native)
+    }
+
+    console.log('chats', chats)
+
     return (
         <div className="flex flex-col flex-auto h-full p-6">
             <div
                 className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
             >
                 <div className="flex flex-col h-full overflow-x-auto mb-4">
-                    <div className="flex flex-col h-full">
-                        <div className="grid grid-cols-12 gap-y-2">
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>Hey How are you today?</div>
+
+                    {!chats.length ? <button onClick={onCreateChat}>Start chat</button> : (<div className="flex flex-col h-full">
+                    <div className="grid grid-cols-12 gap-y-2">
+                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                            <div className="flex flex-row items-center">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
+                                </div>
+                                <div
+                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                >
+                                    <div>Hey How are you today?</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                            <div className="flex flex-row items-center">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
+                                </div>
+                                <div
+                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                >
+                                    <div>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                        elit. Vel ipsa commodi illum saepe numquam maxime
+                                        asperiores voluptate sit, minima perspiciatis.
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                                            elit. Vel ipsa commodi illum saepe numquam maxime
-                                            asperiores voluptate sit, minima perspiciatis.
-                                        </div>
+                        </div>
+                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
+                            <div className="flex items-center justify-start flex-row-reverse">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
+                                </div>
+                                <div
+                                    className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
+                                >
+                                    <p className='text-stone-50'>I'm ok what about you?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
+                            <div className="flex items-center justify-start flex-row-reverse">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
+                                </div>
+                                <div
+                                    className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
+                                >
+                                    <div className='text-stone-50'>
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing. ?
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                                <div className="flex items-center justify-start flex-row-reverse">
+                        </div>
+                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                            <div className="flex flex-row items-center">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
+                                </div>
+                                <div
+                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                >
+                                    <div>Lorem ipsum dolor sit amet !</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
+                            <div className="flex items-center justify-start flex-row-reverse">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
+                                </div>
+                                <div
+                                    className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
+                                >
+                                    <p className='text-stone-50'>
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+                                    </p>
                                     <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                        className="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-teal-800"
                                     >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <p className='text-stone-50'>I'm ok what about you?</p>
+                                        Seen
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                                <div className="flex items-center justify-start flex-row-reverse">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div className='text-stone-50'>
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                                        </div>
-                                    </div>
+                        </div>
+                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                            <div className="flex flex-row items-center">
+                                <div
+                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                >
+                                    A
                                 </div>
-                            </div>
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>Lorem ipsum dolor sit amet !</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                                <div className="flex items-center justify-start flex-row-reverse">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <p className='text-stone-50'>
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                                        </p>
-                                        <div
-                                            className="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-teal-800"
-                                        >
-                                            Seen
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                                <div className="flex flex-row items-center">
-                                    <div
-                                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                    >
-                                        A
-                                    </div>
-                                    <div
-                                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                    >
-                                        <div>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                            Perspiciatis, in.
-                                        </div>
+                                <div
+                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                >
+                                    <div>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Perspiciatis, in.
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>)}
+
                 </div>
                 <div
                     className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
@@ -212,7 +228,7 @@ const Chat = () => {
                                 <PopoverContent className='p-0'>
                                     <Picker
                                         data={data}
-                                        onEmojiSelect={console.log}
+                                        onEmojiSelect={addEmojiToMessage}
                                         locale='uk'
                                     />
                                 </PopoverContent>

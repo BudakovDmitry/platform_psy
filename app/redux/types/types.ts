@@ -1,4 +1,4 @@
-import {UserType} from "@/app/types/types";
+import {ChatType, UserType} from "@/app/types/types";
 
 export type AuthStateType = {
     user: UserType
@@ -16,6 +16,13 @@ export type UserStateType = {
     succeeded: boolean
 }
 
+export type AdminStateType = {
+    admin: UserType
+    pending: boolean
+    errors: string | null
+    succeeded: boolean
+}
+
 export type CustomersStateType = {
     customers: UserType[]
     pending: boolean
@@ -28,4 +35,12 @@ export type CustomerStateType = {
     pending: boolean
     errors: string | null
     succeeded: boolean
+}
+
+export type ChatsStateType = {
+    chats: ChatType[]
+    pending: boolean
+    errors: string | null
+    succeeded: boolean
+    isCreated: boolean
 }

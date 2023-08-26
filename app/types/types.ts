@@ -23,3 +23,21 @@ export type AuthResponse = {
     refreshToken: string
     user: UserType
 }
+
+export type ChatType = {
+    _id: string; // Ідентифікатор чату
+    participants: string[]; // Масив ідентифікаторів учасників чату (наприклад, ідентифікатори користувачів)
+    messages: MessageType[]; // Масив повідомлень у чаті
+}
+
+export type MessageType = {
+    _id: string; // Ідентифікатор повідомлення
+    content: string; // Вміст повідомлення
+    sender: string; // Ідентифікатор відправника повідомлення (наприклад, ідентифікатор користувача)
+    timestamp: string; // Дата та час надсилання повідомлення (як рядок або об'єкт Date)
+}
+
+export type NewChatType = {
+    name: string;
+    participants: string[]
+}

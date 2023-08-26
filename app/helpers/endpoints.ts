@@ -3,5 +3,6 @@ export enum Endpoints {
     AUTH_LOGIN = '/auth/login',
     AUTH_LOGOUT = '/auth/logout',
     AUTH_REFRESH = '/auth/refresh',
-    USERS = '/users'
+    USERS = '/users',
+    CHATS = '/chats'
 }
