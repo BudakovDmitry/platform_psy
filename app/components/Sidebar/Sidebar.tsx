@@ -6,6 +6,7 @@ import {SidebarItems} from "@/app/components/Sidebar/SidebarItems";
 import Logo from "@/app/components/Logo/Logo";
 import {UserType} from "@/app/types/types";
 import Loader from "@/app/components/Loader/Loader";
+import {User} from "@nextui-org/react";
 
 type SidebarProps = {
     user: UserType
@@ -22,6 +23,15 @@ const Sidebar = ({ user, pathname, logoutUser }: SidebarProps) => {
             <div className="fixed flex flex-col top-0 left-0 w-72 bg-white h-full shadow-xl">
                 <div className="flex items-center justify-center h-24">
                     <Logo />
+                </div>
+                <div className='flex ml-5 mt-4 z-20'>
+                    <User
+                        name={user.name}
+                        description={user.email}
+                        avatarProps={{
+                            src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                        }}
+                    />
                 </div>
                 <div className="overflow-y-auto overflow-x-hidden flex-grow">
                     <ul className="flex flex-col py-4 space-y-1">

@@ -10,7 +10,7 @@ import {API_URL} from "@/app/http/axios";
 import Image from "next/image";
 import {fetchAdmin} from "@/app/redux/slices/admin/adminSlice";
 import {useDispatch} from "react-redux";
-import {ChatType} from "@/app/types/types";
+import {ChatType, NewMessageType} from "@/app/types/types";
 
 const socket = io('http://localhost:5000', {
     transports: ['websocket'],
@@ -19,11 +19,19 @@ const socket = io('http://localhost:5000', {
 type ChatProps = {
     chats: ChatType[]
     onCreateChat: () => void
+    onSendMessage: (message: NewMessageType) => void
 }
 
-const Chat = ({onCreateChat, chats}: ChatProps) => {
+const Chat = ({onCreateChat, chats, onSendMessage}: ChatProps) => {
     const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState({
+        chatId: chats[0]._id,
+        messageContent: {
+            sender: localStorage.getItem('userId') || '',
+            content: ''
+        }
+
+    });
 
     useEffect(() => {
         socket.on('message', (message) => {
@@ -35,7 +43,17 @@ const Chat = ({onCreateChat, chats}: ChatProps) => {
     const sendMessage = () => {
         if (message) {
             socket.emit('message', message);
-            setMessage('');
+            setMessage((prevMessage) => {
+                return {
+                    ...prevMessage,
+                    messageContent: {
+                        ...prevMessage.messageContent,
+                        content: ''
+                    }
+                }
+            });
+
+            onSendMessage(message)
         }
     };
     {/*{messages.map((msg, index) => (*/}
@@ -43,7 +61,27 @@ const Chat = ({onCreateChat, chats}: ChatProps) => {
     {/*))}*/}
 
     const addEmojiToMessage = (emoji: { native: string; }) => {
-        setMessage(previosMessage => previosMessage + emoji.native)
+        setMessage((prevMessage) => {
+            return {
+                ...prevMessage,
+                message: {
+                    ...prevMessage.messageContent,
+                    content: prevMessage.messageContent.content + emoji.native
+                }
+            }
+        })
+    }
+
+    const onChangeMessage = (value: string) => {
+        setMessage((prevMessage) => {
+            return {
+                ...prevMessage,
+                messageContent: {
+                    ...prevMessage.messageContent,
+                    content: value
+                }
+            }
+        })
     }
 
     console.log('chats', chats)
@@ -202,8 +240,8 @@ const Chat = ({onCreateChat, chats}: ChatProps) => {
                         <div className="relative w-full">
                             <input
                                 type="text"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
+                                value={message.messageContent.content}
+                                onChange={(e) => onChangeMessage(e.target.value)}
                                 className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
                             />
                             <Popover placement="top">

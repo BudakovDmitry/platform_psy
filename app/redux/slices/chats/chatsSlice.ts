@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {ChatType, NewChatType} from "@/app/types/types";
+import {ChatType, NewChatType, NewMessageType} from "@/app/types/types";
 import $api from "@/app/http/axios";
 import {Endpoints} from "@/app/helpers/endpoints";
 
@@ -7,7 +7,6 @@ export const fetchChats = createAsyncThunk(
     'chats/fetchChats',
     async () => {
         const response = await $api.get(Endpoints.CHATS);
-        console.log('response', response)
         return response.data;
     }
 );
@@ -15,9 +14,7 @@ export const fetchChats = createAsyncThunk(
 export const fetchChatsByUserId = createAsyncThunk(
     'chats/fetchChatsByUserId',
     async (id: string) => {
-        console.log('id', id)
         const response = await $api.get(`${Endpoints.CHATS}/user/${id}`);
-        console.log('response fetch by user id', response)
         return response.data;
     }
 );
@@ -26,7 +23,14 @@ export const createChat = createAsyncThunk(
     'chats/createChat',
     async (newChat: NewChatType) => {
         const response = await $api.post(Endpoints.CHATS, newChat);
-        console.log('create chat', response)
+        return response.data;
+    }
+);
+
+export const addMessage = createAsyncThunk(
+    'chats/addMessage',
+    async (message: NewMessageType) => {
+        const response = await $api.post(`${Endpoints.CHATS}/${message.chatId}/messages`, message.messageContent);
         return response.data;
     }
 );
@@ -95,6 +99,22 @@ export const chatsSlice = createSlice({
             state.errors = null;
         });
         builder.addCase(createChat.rejected, (state: any) => {
+            state.pending = false;
+            state.succeeded = false;
+            state.errors = null;
+        });
+
+        builder.addCase(addMessage.pending, (state: any) => {
+            state.pending = true;
+            state.errors = null;
+            state.succeeded = false;
+        });
+        builder.addCase(addMessage.fulfilled, (state: any, action: any) => {
+            state.pending = false;
+            state.succeeded = true;
+            state.errors = null;
+        });
+        builder.addCase(addMessage.rejected, (state: any) => {
             state.pending = false;
             state.succeeded = false;
             state.errors = null;

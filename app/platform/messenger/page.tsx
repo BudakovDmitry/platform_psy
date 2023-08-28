@@ -5,12 +5,13 @@ import {useEffect, useState} from "react";
 import {fetchAdmin} from "@/app/redux/slices/admin/adminSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/app/redux/store";
-import {createChat, fetchChatsByUserId} from "@/app/redux/slices/chats/chatsSlice";
+import {addMessage, createChat, fetchChatsByUserId} from "@/app/redux/slices/chats/chatsSlice";
 import Loader from "@/app/components/Loader/Loader";
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import {NewMessageType} from "@/app/types/types";
 
-const Messanger = () => {
+const Messenger = () => {
     const dispatch = useDispatch();
     const admin = useSelector((state: RootState) => state.admin);
     const chats = useSelector((state: RootState) => state.chats);
@@ -30,8 +31,6 @@ const Messanger = () => {
         dispatch(fetchChatsByUserId(userId))
     }, []);
 
-
-
     const onCreateChat = () => {
 
         // @ts-ignore
@@ -41,10 +40,10 @@ const Messanger = () => {
         }))
     }
 
-    // if(!isLoading() && !chats.chats.length && !chats.isCreated) {
-    //     //@ts-ignore
-    // }
-
+    const sendMessage = (message: NewMessageType) => {
+        // @ts-ignore
+        dispatch(addMessage(message))
+    }
 
     if(isLoading()) {
         return <Loader />
@@ -53,9 +52,9 @@ const Messanger = () => {
 
     return (
         <>
-            <Chat onCreateChat={onCreateChat} chats={chats.chats} />
+            <Chat onCreateChat={onCreateChat} chats={chats.chats} onSendMessage={sendMessage} />
         </>
     )
 }
 
-export default Messanger;
+export default Messenger;

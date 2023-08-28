@@ -41,3 +41,13 @@ export type NewChatType = {
     name: string;
     participants: string[]
 }
+
+export type NewMessageType = {
+    chatId: string;
+    messageContent: NewMessageContentType
+}
+
+export type NewMessageContentType = {
+    sender: string;
+    content: string
+}
