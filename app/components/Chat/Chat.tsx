@@ -5,12 +5,30 @@ import io from 'socket.io-client';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import SendIcon from '@/public/send.png'
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Popover, PopoverTrigger, PopoverContent, Button} from "@nextui-org/react";
-import {API_URL} from "@/app/http/axios";
+import {
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    Button,
+    ScrollShadow
+} from "@nextui-org/react";
+import $api, {API_URL} from "@/app/http/axios";
 import Image from "next/image";
 import {fetchAdmin} from "@/app/redux/slices/admin/adminSlice";
-import {useDispatch} from "react-redux";
-import {ChatType, NewMessageType} from "@/app/types/types";
+import {useDispatch, useSelector} from "react-redux";
+import {ChatType, NewMessageType, UserType} from "@/app/types/types";
+import {Roles} from "@/app/helpers/roles";
+import {Routes} from "@/app/helpers/routes";
+import {Endpoints} from "@/app/helpers/endpoints";
+import Message from "@/app/components/Message/Message";
+import Loader from "@/app/components/Loader/Loader";
+import {addMessageReducer} from "@/app/redux/slices/chats/chatsSlice";
+// @ts-ignore
+import { v4 as uuidv4 } from 'uuid';
 
 const socket = io('http://localhost:5000', {
     transports: ['websocket'],
@@ -20,29 +38,65 @@ type ChatProps = {
     chats: ChatType[]
     onCreateChat: () => void
     onSendMessage: (message: NewMessageType) => void
+    admin: UserType
+    isChatsLoading: boolean
 }
 
-const Chat = ({onCreateChat, chats, onSendMessage}: ChatProps) => {
+const Chat = ({onCreateChat, chats, onSendMessage, admin, isChatsLoading}: ChatProps) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState({
-        chatId: chats[0]._id,
+        chatId: '',
         messageContent: {
             sender: localStorage.getItem('userId') || '',
-            content: ''
+            content: '',
+            timestamp: Date,
+            _id: ''
         }
 
     });
+    const dispatch = useDispatch();
+    const [companion, setCompanion] = useState({} as UserType)
+    const user = useSelector((state: any) => state.user)
+    const isAdminCurrentUser = user.user.roles.includes(Roles.ADMIN)
 
     useEffect(() => {
-        socket.on('message', (message) => {
-            // @ts-ignore
-            setMessages((prevMessages) => [...prevMessages, message]);
+        socket.on('newMessage', (data) => {
+            console.log('Отримано нове повідомлення:', data);
+
+            dispatch(addMessageReducer(data))
         });
+
+
+        if(isAdminCurrentUser) {
+            const idUser = chats[0].participants.filter((userId: string) => userId !== user.user._id)
+            $api.get(`${Endpoints.USERS}/${idUser}`).then(response => {
+                setCompanion(response.data)
+            })
+        } else {
+            setCompanion(admin)
+        }
     }, []);
 
     const sendMessage = () => {
+        const idMessage = uuidv4();
+        const timestamp = new Date();
+
         if (message) {
-            socket.emit('message', message);
+            socket.emit('sendMessage', {
+                ...message.messageContent,
+                timestamp,
+                _id: idMessage
+            });
+            onSendMessage({
+                ...message,
+                chatId: chats[0]._id,
+                messageContent: {
+                    ...message.messageContent,
+                    timestamp,
+                    _id: idMessage
+                }
+            })
+
             setMessage((prevMessage) => {
                 return {
                     ...prevMessage,
@@ -52,19 +106,14 @@ const Chat = ({onCreateChat, chats, onSendMessage}: ChatProps) => {
                     }
                 }
             });
-
-            onSendMessage(message)
         }
     };
-    {/*{messages.map((msg, index) => (*/}
-    {/*    <div key={index}>{msg}</div>*/}
-    {/*))}*/}
 
     const addEmojiToMessage = (emoji: { native: string; }) => {
         setMessage((prevMessage) => {
             return {
                 ...prevMessage,
-                message: {
+                messageContent: {
                     ...prevMessage.messageContent,
                     content: prevMessage.messageContent.content + emoji.native
                 }
@@ -84,135 +133,29 @@ const Chat = ({onCreateChat, chats, onSendMessage}: ChatProps) => {
         })
     }
 
-    console.log('chats', chats)
+    if(!Object.keys(companion).length || isChatsLoading/* || !chats[0].messages.length*/) {
+        return <Loader />
+    }
 
     return (
-        <div className="flex flex-col flex-auto h-full p-6">
+        <div className="">
             <div
-                className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
+                className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-screen p-4"
             >
-                <div className="flex flex-col h-full overflow-x-auto mb-4">
 
-                    {!chats.length ? <button onClick={onCreateChat}>Start chat</button> : (<div className="flex flex-col h-full">
-                    <div className="grid grid-cols-12 gap-y-2">
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                            <div className="flex flex-row items-center">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                >
-                                    <div>Hey How are you today?</div>
-                                </div>
-                            </div>
+                    <div className="flex flex-col h-full overflow-x-auto mb-4">
+                        <ScrollShadow hideScrollBar size={60} className="h-full">
+
+                        {!chats.length ? <button onClick={onCreateChat}>Start chat</button> : (
+                        <div className="grid grid-cols-12 gap-y-2">
+                            {chats[0].messages.map((message) => {
+                                return <Message key={message._id} isCurrentSender={message.sender === user.user._id} message={message.content} currentUser={user.user} companionUser={companion} />
+                            })}
                         </div>
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                            <div className="flex flex-row items-center">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                >
-                                    <div>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                                        elit. Vel ipsa commodi illum saepe numquam maxime
-                                        asperiores voluptate sit, minima perspiciatis.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                            <div className="flex items-center justify-start flex-row-reverse">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
-                                >
-                                    <p className='text-stone-50'>I'm ok what about you?</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                            <div className="flex items-center justify-start flex-row-reverse">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
-                                >
-                                    <div className='text-stone-50'>
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                            <div className="flex flex-row items-center">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                >
-                                    <div>Lorem ipsum dolor sit amet !</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                            <div className="flex items-center justify-start flex-row-reverse">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
-                                >
-                                    <p className='text-stone-50'>
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                                    </p>
-                                    <div
-                                        className="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-teal-800"
-                                    >
-                                        Seen
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                            <div className="flex flex-row items-center">
-                                <div
-                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                >
-                                    A
-                                </div>
-                                <div
-                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                >
-                                    <div>
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                        Perspiciatis, in.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    )}
+                        </ScrollShadow>
                     </div>
-                </div>)}
 
-                </div>
                 <div
                     className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
                 >

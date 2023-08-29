@@ -47,6 +47,15 @@ export const chatsSlice = createSlice({
     name: 'chats',
     initialState,
     reducers: {
+        addMessageReducer: (state, action) => {
+            console.log('this', action.payload._id)
+            console.log('this', action.payload)
+            const isMessageAlreadyExist = state.chats[0].messages.some((message: any) => message._id === action.payload._id);
+
+            if (!isMessageAlreadyExist) {
+                state.chats[0].messages.push(action.payload);
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchChats.pending, (state: any) => {
@@ -104,12 +113,15 @@ export const chatsSlice = createSlice({
             state.errors = null;
         });
 
+
+
         builder.addCase(addMessage.pending, (state: any) => {
             state.pending = true;
             state.errors = null;
             state.succeeded = false;
         });
         builder.addCase(addMessage.fulfilled, (state: any, action: any) => {
+
             state.pending = false;
             state.succeeded = true;
             state.errors = null;
@@ -122,6 +134,6 @@ export const chatsSlice = createSlice({
     },
 })
 
-export const {} = chatsSlice.actions;
+export const { addMessageReducer } = chatsSlice.actions;
 
 export default chatsSlice.reducer;

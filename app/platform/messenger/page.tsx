@@ -15,8 +15,8 @@ const Messenger = () => {
     const dispatch = useDispatch();
     const admin = useSelector((state: RootState) => state.admin);
     const chats = useSelector((state: RootState) => state.chats);
+
     console.log('chats', chats)
-    console.log('admin', admin)
     const isLoading = () => {
         return chats.pending || admin.pending
     }
@@ -52,7 +52,7 @@ const Messenger = () => {
 
     return (
         <>
-            <Chat onCreateChat={onCreateChat} chats={chats.chats} onSendMessage={sendMessage} />
+            <Chat onCreateChat={onCreateChat} chats={chats.chats} onSendMessage={sendMessage} admin={admin.admin} isChatsLoading={chats.pending} />
         </>
     )
 }

@@ -49,5 +49,7 @@ export type NewMessageType = {
 
 export type NewMessageContentType = {
     sender: string;
-    content: string
+    content: string;
+    timestamp: Date;
+    _id: string;
 }
