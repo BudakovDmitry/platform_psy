@@ -8,10 +8,18 @@ export type UserType = {
     activationLink: string
     name: string
     diarySuccess: DiarySuccessType[]
+    diaryOfGoodness: DiaryOfGoodnessType[]
     roles: string[]
 }
 
 export type DiarySuccessType = {
+    _id: string
+    title: string
+    description: string
+    date: string
+}
+
+export type DiaryOfGoodnessType = {
     _id: string
     title: string
     description: string

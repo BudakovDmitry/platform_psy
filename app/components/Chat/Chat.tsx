@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import io from 'socket.io-client';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
@@ -144,15 +144,14 @@ const Chat = ({onCreateChat, chats, onSendMessage, admin, isChatsLoading}: ChatP
             >
 
                     <div className="flex flex-col h-full overflow-x-auto mb-4">
-                        <ScrollShadow hideScrollBar size={60} className="h-full">
-
-                        {!chats.length ? <button onClick={onCreateChat}>Start chat</button> : (
-                        <div className="grid grid-cols-12 gap-y-2">
-                            {chats[0].messages.map((message) => {
-                                return <Message key={message._id} isCurrentSender={message.sender === user.user._id} message={message.content} currentUser={user.user} companionUser={companion} />
-                            })}
-                        </div>
-                    )}
+                        <ScrollShadow hideScrollBar size={60} className="h-full" >
+                            {!chats.length ? <button onClick={onCreateChat}>Start chat</button> : (
+                            <div className="grid grid-cols-12 gap-y-2">
+                                {chats[0].messages.map((message) => {
+                                    return <Message key={message._id} isCurrentSender={message.sender === user.user._id} message={message.content} currentUser={user.user} companionUser={companion} />
+                                })}
+                            </div>
+                        )}
                         </ScrollShadow>
                     </div>
 

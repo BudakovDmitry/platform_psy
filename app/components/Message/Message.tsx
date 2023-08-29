@@ -1,4 +1,5 @@
 import {UserType} from "@/app/types/types";
+import {Avatar} from "@nextui-org/react";
 
 type MessageProps = {
     isCurrentSender: boolean
@@ -13,11 +14,7 @@ const Message = ({isCurrentSender, message, currentUser, companionUser}: Message
         return (
             <div className="col-start-6 col-end-13 p-3 rounded-lg">
                 <div className="flex items-center justify-start flex-row-reverse">
-                    <div
-                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                    >
-                        {currentUser.name[0].toUpperCase()}
-                    </div>
+                    <Avatar className='min-w-unit-10' isBordered radius="md" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
                     <div
                         className="relative mr-3 text-sm bg-teal-600 py-2 px-4 shadow rounded-xl"
                     >
@@ -37,11 +34,7 @@ const Message = ({isCurrentSender, message, currentUser, companionUser}: Message
     return (
         <div className="col-start-1 col-end-8 p-3 rounded-lg">
             <div className="flex flex-row items-center">
-                <div
-                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                >
-                    {companionUser.name[0].toUpperCase()}
-                </div>
+                <Avatar className='min-w-unit-10' isBordered radius="md" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
                 <div
                     className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
                 >
