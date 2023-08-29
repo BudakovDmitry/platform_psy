@@ -224,7 +224,7 @@ const DiarySuccess = () => {
                 >
                     {isShowForm ? <EyeFilledIcon /> : <EyeSlashFilledIcon />}
                 </Button>
-                <ScrollShadow hideScrollBar className='h-[800px]'>
+                <ScrollShadow hideScrollBar className='h-[500px]'>
                     <Card
                         isBlurred
                         className='border-none my-6'

@@ -19,6 +19,14 @@ export const addDiarySuccess = createAsyncThunk(
     }
 );
 
+export const addDiaryOfGoodness = createAsyncThunk(
+    'users/addDiaryOfGoodness',
+    async (user: UserType) => {
+        const response = await $api.put(Endpoints.USERS, user);
+        return response.data;
+    }
+);
+
 const initialState = {
     user: {} as UserType,
     pending: false,
@@ -62,6 +70,24 @@ export const userSlice = createSlice({
             state.errors = null;
         });
         builder.addCase(addDiarySuccess.rejected, (state: any) => {
+            state.pending = false;
+            state.succeeded = false;
+            state.errors = null;
+        });
+
+
+        builder.addCase(addDiaryOfGoodness.pending, (state: any) => {
+            state.pending = true;
+            state.errors = null;
+            state.succeeded = false;
+        });
+        builder.addCase(addDiaryOfGoodness.fulfilled, (state: any, action: any) => {
+            state.pending = false;
+            state.user = action.payload;
+            state.succeeded = true;
+            state.errors = null;
+        });
+        builder.addCase(addDiaryOfGoodness.rejected, (state: any) => {
             state.pending = false;
             state.succeeded = false;
             state.errors = null;
