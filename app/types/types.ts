@@ -10,6 +10,7 @@ export type UserType = {
     diarySuccess: DiarySuccessType[]
     diaryOfGoodness: DiaryOfGoodnessType[]
     roles: string[]
+    registrationDate: Date
 }
 
 export type DiarySuccessType = {

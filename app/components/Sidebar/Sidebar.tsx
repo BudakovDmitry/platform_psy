@@ -15,7 +15,7 @@ type SidebarProps = {
 }
 
 const Sidebar = ({ user, pathname, logoutUser }: SidebarProps) => {
-    if(!user || !user.roles.length) {
+    if(!user || !user.roles?.length) {
         return <Loader/>
     }
 

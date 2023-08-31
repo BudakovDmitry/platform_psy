@@ -9,6 +9,7 @@ import {checkAuth} from "@/app/redux/slices/auth/authSlice";
 import {fetchUserById} from "@/app/redux/slices/user/userSlice";
 import Loader from "@/app/components/Loader/Loader";
 import {logout} from "@/app/redux/slices/auth/authSlice";
+import {fetchAllCustomers} from "@/app/redux/slices/customers/customersSlice";
 
 const PlatformLayout = ({children}: { children: ReactNode }) => {
     const store = useSelector((state: any) => state.auth)
@@ -26,6 +27,9 @@ const PlatformLayout = ({children}: { children: ReactNode }) => {
         localStorage.getItem('token') ? dispatch(checkAuth()) : redirect('/login')
         // @ts-ignore
         localStorage.getItem('userId') && dispatch(fetchUserById(localStorage.getItem('userId')))
+
+        // @ts-ignore
+        dispatch(fetchAllCustomers())
     }, [])
 
     if(store.isChecking) {

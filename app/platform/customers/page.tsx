@@ -5,9 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Roles} from "@/app/helpers/roles";
 import {redirect} from "next/navigation";
 import {Routes} from "@/app/helpers/routes";
-import {fetchAllCustomers, updateCustomer} from "@/app/redux/slices/customers/customersSlice";
-import {useEffect, useState} from "react";
-import Loader from "@/app/components/Loader/Loader";
+import {updateCustomer} from "@/app/redux/slices/customers/customersSlice";
 import {UserType} from "@/app/types/types";
 import { useRouter } from 'next/navigation'
 
@@ -17,11 +15,6 @@ const Customers = () => {
     const customers = useSelector((state: any) => state.customers)
     const dispatch = useDispatch()
     const router = useRouter()
-
-    useEffect(() => {
-        // @ts-ignore
-        dispatch(fetchAllCustomers())
-    }, []);
 
     if (!user.roles.includes(Roles.ADMIN)) {
         redirect(Routes.DASHBOARD)
