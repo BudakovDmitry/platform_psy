@@ -79,13 +79,13 @@ export const SidebarItems = [
         icon: ProfileIcon,
         roles: ['ADMIN', 'USER']
     },
-    {
-        id: 11,
-        name: 'Налаштування',
-        link: `${Routes.SETTINGS}`,
-        icon: SettingsIcon,
-        roles: ['ADMIN', 'USER']
-    },
+    // {
+    //     id: 11,
+    //     name: 'Налаштування',
+    //     link: `${Routes.SETTINGS}`,
+    //     icon: SettingsIcon,
+    //     roles: ['ADMIN', 'USER']
+    // },
     {
         id: 12,
         name: 'Вийти з аккаунту',
