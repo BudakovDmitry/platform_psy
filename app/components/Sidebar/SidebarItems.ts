@@ -60,13 +60,13 @@ export const SidebarItems = [
         icon: CustomersIcon,
         roles: ['ADMIN']
     },
-    {
-        id: 8,
-        name: 'Календар',
-        link: `${Routes.CALENDAR}`,
-        icon: CalendarIcon,
-        roles: ['ADMIN']
-    },
+    // {
+    //     id: 8,
+    //     name: 'Календар',
+    //     link: `${Routes.CALENDAR}`,
+    //     icon: CalendarIcon,
+    //     roles: ['ADMIN']
+    // },
     {
         id: 9,
         name: 'Персональні налаштування',
