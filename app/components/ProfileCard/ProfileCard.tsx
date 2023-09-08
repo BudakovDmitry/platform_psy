@@ -1,4 +1,6 @@
 import {UserType} from "@/app/types/types";
+import {Endpoints} from "@/app/helpers/endpoints";
+import {API_URL} from "@/app/http/axios";
 
 type ProfileCardProps = {
     user: UserType
@@ -14,7 +16,9 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                 <div className="flex flex-wrap justify-center">
                     <div className="w-full flex justify-center">
                         <div className="relative">
-                            <img src="https://github.com/creativetimofficial/soft-ui-dashboard-tailwind/blob/main/build/assets/img/team-2.jpg?raw=true" className="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]"/>
+                            <div className="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 w-[150px] h-[150px] overflow-hidden">
+                                <img src={`${API_URL}${Endpoints.AVATAR}/1694209400395-keanu.jpg`} className='object-cover w-full h-full' />
+                            </div>
                         </div>
                     </div>
                     <div className="w-full text-center mt-20">

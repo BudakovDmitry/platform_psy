@@ -4,5 +4,7 @@ export enum Endpoints {
     AUTH_LOGOUT = '/auth/logout',
     AUTH_REFRESH = '/auth/refresh',
     USERS = '/users',
-    CHATS = '/chats'
+    CHATS = '/chats',
+    FILES = '/files',
+    AVATAR = '/files/avatar'
 }

@@ -7,6 +7,8 @@ import Logo from "@/app/components/Logo/Logo";
 import {UserType} from "@/app/types/types";
 import Loader from "@/app/components/Loader/Loader";
 import {User} from "@nextui-org/react";
+import {API_URL} from "@/app/http/axios";
+import {Endpoints} from "@/app/helpers/endpoints";
 
 type SidebarProps = {
     user: UserType
@@ -29,7 +31,7 @@ const Sidebar = ({ user, pathname, logoutUser }: SidebarProps) => {
                         name={user.name}
                         description={user.email}
                         avatarProps={{
-                            src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
+                            src: `${API_URL}${Endpoints.AVATAR}/1694209400395-keanu.jpg`
                         }}
                     />
                 </div>
