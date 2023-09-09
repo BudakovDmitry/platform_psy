@@ -11,6 +11,7 @@ export type UserType = {
     diaryOfGoodness: DiaryOfGoodnessType[]
     roles: string[]
     registrationDate: Date
+    avatar: string
 }
 
 export type DiarySuccessType = {

@@ -1,6 +1,30 @@
 import {UserType} from "@/app/types/types";
 import {Endpoints} from "@/app/helpers/endpoints";
 import {API_URL} from "@/app/http/axios";
+import { FilePond, registerPlugin } from 'react-filepond'
+import {Modal, ModalContent, ModalBody, useDisclosure} from "@nextui-org/react";
+
+
+import 'filepond/dist/filepond.min.css'
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginImageEdit from 'filepond-plugin-image-edit';
+import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import 'filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css';
+import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+import {useState} from "react";
+import {Avatar, AvatarIcon} from "@nextui-org/react";
+
+registerPlugin(
+    FilePondPluginImageExifOrientation,
+    FilePondPluginImagePreview,
+    FilePondPluginImageCrop,
+    FilePondPluginImageResize,
+    FilePondPluginImageTransform,
+    FilePondPluginImageEdit
+);
 
 type ProfileCardProps = {
     user: UserType
@@ -8,7 +32,12 @@ type ProfileCardProps = {
 
 const ProfileCard = ({ user }: ProfileCardProps) => {
 
-    console.log('user', user)
+    const [files, setFiles] = useState([])
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+    const onCloseModal = () => {
+        setFiles([])
+    }
 
     return (
         <div className="relative max-w-md mx-auto md:max-w-2xl mt-6 min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-16">
@@ -17,7 +46,45 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                     <div className="w-full flex justify-center">
                         <div className="relative">
                             <div className="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 w-[150px] h-[150px] overflow-hidden">
-                                <img src={`${API_URL}${Endpoints.AVATAR}/1694209400395-keanu.jpg`} className='object-cover w-full h-full' />
+                                {user.avatar ? (
+                                    <img onClick={onOpen} src={`${API_URL}${Endpoints.AVATAR}/1694209400395-keanu.jpg`} className='object-cover w-full h-full hover:opacity-70 hover:cursor-pointer duration-500' />
+                                    ) : (
+                                    <Avatar
+                                        onClick={onOpen}
+                                        icon={<AvatarIcon />}
+                                        classNames={{
+                                            base: [
+                                                "bg-gradient-to-br from-[#FFB457] to-[#FF705B]",
+                                                "w-full",
+                                                "h-full",
+                                                "hover:opacity-70",
+                                                "hover:cursor-pointer",
+                                                "duration-500"
+                                            ],
+                                            icon: "text-black/80",
+                                        }}
+                                    />
+                                )}
+                                <Modal backdrop="blur" size='xl' onClose={onCloseModal} isOpen={isOpen} onOpenChange={onOpenChange}>
+                                    <ModalContent className='p-6'>
+                                        <ModalBody>
+                                            <FilePond
+                                                files={files}
+                                                // @ts-ignore
+                                                onupdatefiles={setFiles}
+                                                allowImageCrop={true}
+                                                imageCropAspectRatio='1:1'
+                                                styleLoadIndicatorPosition='center bottom'
+                                                styleProgressIndicatorPosition='right bottom'
+                                                styleButtonRemoveItemPosition='center bottom'
+                                                styleButtonProcessItemPosition='right bottom'
+                                                // server="/api"
+                                                name="files"
+                                                labelIdle='Додайте зображення'
+                                            />
+                                        </ModalBody>
+                                    </ModalContent>
+                                </Modal>
                             </div>
                         </div>
                     </div>
@@ -53,6 +120,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                 {/*    </div>*/}
                 {/*</div>*/}
             </div>
+
         </div>
     )
 }
