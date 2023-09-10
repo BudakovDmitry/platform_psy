@@ -27,6 +27,14 @@ export const addDiaryOfGoodness = createAsyncThunk(
     }
 );
 
+export const addAvatar = createAsyncThunk(
+    'users/addAvatar',
+    async (formData) => {
+        const response = await $api.post(`${Endpoints.FILES}/upload`, formData)
+        return response.data;
+    }
+);
+
 const initialState = {
     user: {} as UserType,
     pending: false,
@@ -88,6 +96,24 @@ export const userSlice = createSlice({
             state.errors = null;
         });
         builder.addCase(addDiaryOfGoodness.rejected, (state: any) => {
+            state.pending = false;
+            state.succeeded = false;
+            state.errors = null;
+        });
+
+
+        builder.addCase(addAvatar.pending, (state: any) => {
+            state.pending = true;
+            state.errors = null;
+            state.succeeded = false;
+        });
+        builder.addCase(addAvatar.fulfilled, (state: any, action: any) => {
+            state.pending = false;
+            state.user = action.payload;
+            state.succeeded = true;
+            state.errors = null;
+        });
+        builder.addCase(addAvatar.rejected, (state: any) => {
             state.pending = false;
             state.succeeded = false;
             state.errors = null;

@@ -1,6 +1,6 @@
 import {UserType} from "@/app/types/types";
 import {Endpoints} from "@/app/helpers/endpoints";
-import {API_URL} from "@/app/http/axios";
+import $api, {API_URL} from "@/app/http/axios";
 import { FilePond, registerPlugin } from 'react-filepond'
 import {Modal, ModalContent, ModalBody, useDisclosure} from "@nextui-org/react";
 
@@ -16,6 +16,8 @@ import 'filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css';
 import FilePondPluginImageResize from 'filepond-plugin-image-resize';
 import {useState} from "react";
 import {Avatar, AvatarIcon} from "@nextui-org/react";
+import {useDispatch} from "react-redux";
+import {addAvatar} from "@/app/redux/slices/user/userSlice";
 
 registerPlugin(
     FilePondPluginImageExifOrientation,
@@ -35,6 +37,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
     const [files, setFiles] = useState([])
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
+    const dispatch = useDispatch();
     const onCloseModal = () => {
         setFiles([])
     }
@@ -47,7 +50,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                         <div className="relative">
                             <div className="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 w-[150px] h-[150px] overflow-hidden">
                                 {user.avatar ? (
-                                    <img onClick={onOpen} src={`${API_URL}${Endpoints.AVATAR}/1694209400395-keanu.jpg`} className='object-cover w-full h-full hover:opacity-70 hover:cursor-pointer duration-500' />
+                                    <img onClick={onOpen} src={`${API_URL}${Endpoints.AVATAR}/${user.avatar}`} className='object-cover w-full h-full hover:opacity-70 hover:cursor-pointer duration-500' />
                                     ) : (
                                     <Avatar
                                         onClick={onOpen}
@@ -81,6 +84,22 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                                                 // server="/api"
                                                 name="files"
                                                 labelIdle='Додайте зображення'
+                                                server={{
+                                                    process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+                                                        const formData = new FormData();
+                                                        formData.append('avatar', file, file.name);
+                                                        formData.append('_id', user._id);
+
+                                                        // @ts-ignore
+                                                        dispatch(addAvatar(formData))
+
+                                                        return {
+                                                            abort: () => {
+                                                                abort();
+                                                            },
+                                                        };
+                                                    }
+                                                }}
                                             />
                                         </ModalBody>
                                     </ModalContent>

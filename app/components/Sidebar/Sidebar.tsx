@@ -31,7 +31,7 @@ const Sidebar = ({ user, pathname, logoutUser }: SidebarProps) => {
                         name={user.name}
                         description={user.email}
                         avatarProps={{
-                            src: user.avatar ? `${API_URL}${Endpoints.AVATAR}/1694209400395-keanu.jpg` : '',
+                            src: user.avatar ? `${API_URL}${Endpoints.AVATAR}/${user.avatar}` : '',
                         }}
                     />
                 </div>
