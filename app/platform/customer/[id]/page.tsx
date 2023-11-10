@@ -5,12 +5,13 @@ import ArrowLeftIcon from '@/public/arrow_left.png'
 import Image from 'next/image'
 import {useRouter} from "next/navigation";
 import {Routes} from "@/app/helpers/routes";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchCustomerById, updateCustomerById} from "@/app/redux/slices/customer/customerSlice";
+import {fetchCustomerById} from "@/app/redux/slices/customer/customerSlice";
 import Loader from "@/app/components/Loader/Loader";
 import {RootState} from "@/app/redux/store";
 import CustomerCard from "@/app/components/CustomerCard";
+import {updateCustomer} from "@/app/redux/slices/customers/customersSlice";
 
 type CustomerProps = {
     params: {
@@ -34,7 +35,7 @@ const Customer = ({ params }: CustomerProps) => {
     }
     const sendUpdateCustomer = (isActiveCustomerValue: boolean) => {
         // @ts-ignore
-        dispatch(updateCustomerById(
+        dispatch(updateCustomer(
             {
                 ...customer.customer,
                 isActive: isActiveCustomerValue
