@@ -27,34 +27,41 @@ export const SidebarItems = [
         name: 'Чат',
         link: `${Routes.MESSENGER}`,
         icon: MessengerIcon,
-        roles: ['ADMIN', 'USER']
+        roles: ['ADMIN']
     },
     {
         id: 3,
+        name: 'Чат',
+        link: `${Routes.CHAT}`,
+        icon: MessengerIcon,
+        roles: ['USER']
+    },
+    {
+        id: 4,
         name: 'Щоденники',
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 4,
+        id: 5,
         name: 'Успіху',
         link: `${Routes.DIARY_SUCCESS}`,
         icon: DiarySuccessIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 5,
+        id: 6,
         name: 'Блага',
         link: `${Routes.DIARY_OF_GOODNESS}`,
         icon: DiaryOfGoodnessIcon,
         roles: ['ADMIN', 'USER']
     },
     {
-        id: 6,
+        id: 7,
         name: 'Адміністрування',
         roles: ['ADMIN']
     },
     {
-        id: 7,
+        id: 8,
         name: 'Клієнти',
         link: `${Routes.CUSTOMERS}`,
         icon: CustomersIcon,

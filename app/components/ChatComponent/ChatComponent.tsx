@@ -42,7 +42,7 @@ type ChatProps = {
     isChatsLoading: boolean
 }
 
-const Chat = ({onCreateChat, chats, onSendMessage, admin, isChatsLoading}: ChatProps) => {
+const ChatComponent = ({onCreateChat, chats, onSendMessage, admin, isChatsLoading}: ChatProps) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState({
         chatId: '',
@@ -231,4 +231,4 @@ const Chat = ({onCreateChat, chats, onSendMessage, admin, isChatsLoading}: ChatP
     );
 }
 
-export default Chat;
+export default ChatComponent;

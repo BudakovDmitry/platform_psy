@@ -48,8 +48,6 @@ export const chatsSlice = createSlice({
     initialState,
     reducers: {
         addMessageReducer: (state, action) => {
-            console.log('this', action.payload._id)
-            console.log('this', action.payload)
             const isMessageAlreadyExist = state.chats[0].messages.some((message: any) => message._id === action.payload._id);
 
             if (!isMessageAlreadyExist) {

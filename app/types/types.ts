@@ -36,7 +36,7 @@ export type AuthResponse = {
 
 export type ChatType = {
     _id: string; // Ідентифікатор чату
-    participants: string[]; // Масив ідентифікаторів учасників чату (наприклад, ідентифікатори користувачів)
+    participants: UserType[]; // Масив ідентифікаторів учасників чату (наприклад, ідентифікатори користувачів)
     messages: MessageType[]; // Масив повідомлень у чаті
 }
 
