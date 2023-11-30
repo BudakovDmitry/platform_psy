@@ -11,6 +11,7 @@ import Link from 'next/link'
 import {Routes} from "@/app/helpers/routes";
 import {API_URL} from "@/app/http/axios";
 import {Endpoints} from "@/app/helpers/endpoints";
+import {truncateString} from "@/app/helpers/helpers";
 
 const Messenger = () => {
     const dispatch = useDispatch();
@@ -27,13 +28,13 @@ const Messenger = () => {
     return (
         <div className='p-4'>
             <Card>
-                <CardBody>
+                <CardBody className='p-0'>
                     {chats.chats.map((chat: ChatType, index) => (
                         chat.participants.map((user: UserType) => {
                                 if (!user.roles.includes('ADMIN')) {
                                     return (
                                         <Link key={chat._id} href={Routes.CHAT} className='hover:bg-gray-100'>
-                                            <div>
+                                            <div className='px-4 flex justify-between items-center'>
                                                 <User
                                                     name={user.name}
                                                     description={user.email}
@@ -42,8 +43,9 @@ const Messenger = () => {
                                                     }}
                                                     className='my-5'
                                                 />
-                                                {index + 1 !== chats.chats.length ? <Divider/> : null}
+                                                <p className='text-sm italic text-foreground-400'>{chat.messages[0] ? truncateString(chat.messages[chat.messages.length - 1]?.content) : ''}</p>
                                             </div>
+                                            {index + 1 !== chats.chats.length ? <Divider/> : null}
                                         </Link>
                                     )
                                 }

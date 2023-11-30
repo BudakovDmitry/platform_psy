@@ -24,7 +24,7 @@ export const SidebarItems = [
     },
     {
         id: 2,
-        name: 'Чат',
+        name: 'Чати',
         link: `${Routes.MESSENGER}`,
         icon: MessengerIcon,
         roles: ['ADMIN']
