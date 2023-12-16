@@ -18,8 +18,6 @@ const Messenger = () => {
     const chats = useSelector((state: RootState) => state.chats);
     const userId = localStorage.getItem('userId') || '';
 
-    console.log('chats', chats);
-
     useEffect(() => {
         // @ts-ignore
         dispatch(fetchChatsByUserId(userId))
@@ -33,7 +31,7 @@ const Messenger = () => {
                         chat.participants.map((user: UserType) => {
                                 if (!user.roles.includes('ADMIN')) {
                                     return (
-                                        <Link key={chat._id} href={Routes.CHAT} className='hover:bg-gray-100'>
+                                        <Link key={chat._id} href={`${Routes.CHAT}/${chat._id}`} className='hover:bg-gray-100'>
                                             <div className='px-4 flex justify-between items-center'>
                                                 <User
                                                     name={user.name}

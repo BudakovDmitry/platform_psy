@@ -32,7 +32,7 @@ export const SidebarItems = [
     {
         id: 3,
         name: 'Чат',
-        link: `${Routes.CHAT}`,
+        link: `${Routes.CHAT}/user`,
         icon: MessengerIcon,
         roles: ['USER']
     },

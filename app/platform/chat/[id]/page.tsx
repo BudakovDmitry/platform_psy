@@ -11,7 +11,13 @@ import {addMessage, createChat, fetchChatsByUserId} from "@/app/redux/slices/cha
 import { v4 as uuidv4 } from 'uuid';
 import {NewMessageType} from "@/app/types/types";
 
-const Chat = () => {
+type ChatPropsType = {
+    params: {
+        id: string
+    }
+}
+
+const Chat = ({ params }: ChatPropsType) => {
     const dispatch = useDispatch();
     const admin = useSelector((state: RootState) => state.admin);
     const chats = useSelector((state: RootState) => state.chats);
@@ -19,6 +25,9 @@ const Chat = () => {
     const isLoading = () => {
         return chats.pending || admin.pending
     }
+
+    console.log('chats', chats);
+    console.log('params', params);
 
     const userId = localStorage.getItem('userId') || ''
 
@@ -50,7 +59,7 @@ const Chat = () => {
 
     return (
         <>
-            <ChatComponent onCreateChat={onCreateChat} chats={chats.chats} onSendMessage={sendMessage} admin={admin.admin} isChatsLoading={chats.pending} />
+            <ChatComponent onCreateChat={onCreateChat} chats={chats.chats} onSendMessage={sendMessage} admin={admin.admin} isChatsLoading={chats.pending} currentChatForAdmin={params.id !== 'user' ? params.id : undefined} />
         </>
     )
 }

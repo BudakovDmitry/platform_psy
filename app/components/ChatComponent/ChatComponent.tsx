@@ -40,9 +40,10 @@ type ChatProps = {
     onSendMessage: (message: NewMessageType) => void
     admin: UserType
     isChatsLoading: boolean
+    currentChatForAdmin?: string
 }
 
-const ChatComponent = ({onCreateChat, chats, onSendMessage, admin, isChatsLoading}: ChatProps) => {
+const ChatComponent = ({onCreateChat, chats, onSendMessage, admin, isChatsLoading, currentChatForAdmin}: ChatProps) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState({
         chatId: '',
@@ -58,6 +59,9 @@ const ChatComponent = ({onCreateChat, chats, onSendMessage, admin, isChatsLoadin
     const [companion, setCompanion] = useState({} as UserType)
     const user = useSelector((state: any) => state.user)
     const isAdminCurrentUser = user.user.roles.includes(Roles.ADMIN)
+    const currentChat = currentChatForAdmin ? chats.filter((chat: ChatType) => currentChatForAdmin === chat._id) : chats;
+
+    console.log('currentChat', currentChat);
 
     useEffect(() => {
         socket.on('newMessage', (data) => {
@@ -68,8 +72,9 @@ const ChatComponent = ({onCreateChat, chats, onSendMessage, admin, isChatsLoadin
 
 
         if(isAdminCurrentUser) {
-            const idUser = chats[0].participants.filter((userId: string) => userId !== user.user._id)
-            $api.get(`${Endpoints.USERS}/${idUser}`).then(response => {
+            // @ts-ignore
+            const userCompanion = currentChat[0].participants.filter((userFromChat: UserType) => userFromChat._id !== user.user._id)
+            $api.get(`${Endpoints.USERS}/${userCompanion[0]._id}`).then(response => {
                 setCompanion(response.data)
             })
         } else {
@@ -89,7 +94,7 @@ const ChatComponent = ({onCreateChat, chats, onSendMessage, admin, isChatsLoadin
             });
             onSendMessage({
                 ...message,
-                chatId: chats[0]._id,
+                chatId: currentChat[0]._id,
                 messageContent: {
                     ...message.messageContent,
                     timestamp,
@@ -145,9 +150,9 @@ const ChatComponent = ({onCreateChat, chats, onSendMessage, admin, isChatsLoadin
 
                     <div className="flex flex-col h-full overflow-x-auto mb-4">
                         <ScrollShadow hideScrollBar size={60} className="h-full" >
-                            {!chats.length ? <button onClick={onCreateChat}>Start chat</button> : (
+                            {!currentChat.length ? <button onClick={onCreateChat}>Start chat</button> : (
                             <div className="grid grid-cols-12 gap-y-2">
-                                {chats[0].messages.map((message) => {
+                                {currentChat[0].messages.map((message) => {
                                     return <Message key={message._id} isCurrentSender={message.sender === user.user._id} message={message.content} currentUser={user.user} companionUser={companion} />
                                 })}
                             </div>
